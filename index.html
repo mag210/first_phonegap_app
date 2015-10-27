@@ -26,12 +26,33 @@
         <meta name="msapplication-tap-highlight" content="no" />
         <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <!--<link rel="stylesheet" type="text/css" href="css/index.css" />-->
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>  
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha256-Sk3nkD6mLTMOF0EOpNtsIry+s1CsaqQC1rVLTAy+0yc= sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+
+
         <title>Max's App</title>
     </head>
-    <body>
+    <body style="background-color:#e6e6e6">
+      
         <div class="app">
-            <h1>Max's first Phone Gap app!</h1>
+            <div class="panel panel-default">
+                <div class="panel-body"><span><p style="text-align: center;">Menu</p></span><span style="float:right"><button type="button" class="btn btn-default" aria-label="Justify"><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></span></button>
+            </div>
+        </div>
+
+            <div class="list-group" style="padding:10px;">
+                <a href="#" class="list-group-item active">Main menu</a>
+                <a href="#" class="list-group-item" id="menuOption1">Option 1</a>
+                <a href="#" class="list-group-item" id="menuOption2">Option 2</a>
+                <a href="#" class="list-group-item">Option 3</a>
+                <a href="#" class="list-group-item">Option 4</a>
+            </div>
+
+
             <div id="deviceready" class="blink">
                 <p class="event listening">Connecting to Device</p>
                 <p class="event received">Device is Ready</p>
@@ -41,7 +62,22 @@
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript">
             app.initialize();
-            alert("Hello world!") ;
+            
+
+        $( "body" ).on("tap", "#menuOption1", function( event ) 
+        { 
+
+            alert("this is a test using tap") ;
+         });  
+
+        $( "body" ).on("click", "#menuOption2", function( event ) 
+        { 
+
+            alert("this is a test using click") ;
+         });   
+    
+
         </script>
+   
     </body>
 </html>
