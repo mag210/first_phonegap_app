@@ -30,6 +30,7 @@
       <!-- <link rel="stylesheet" type="text/css" href="css/index.css"> -->
        
         <link rel="stylesheet" href="css/jquery.mobile-1.4.5.css">
+        <link rel="stylesheet" href="font_awesome/css/font-awesome.min.css">
 
 
 
@@ -37,20 +38,26 @@
 
 
 
-        <title>Max's App 1</title>
+        <title>University of Exeter Guild Events</title>
     </head>
     <body style="background-color:#e6e6e6">
 
     <div id="reposHome" data-role="page">
-    <div style="background-color:#3399CC;" data-role="header" data-position="fixed"><h1 style="color:white;">Menu</h1></div>
+    <div class="menu" style="background-color:#3399CC;" data-role="header" data-position="fixed"><h1 style="color:white;">Menu</h1></div>
     <div data-role="content">
+
+
+            <div id="deviceready" class="blink">
+                <p class="event listening">Loading... <i class="fa fa-spinner fa-spin"></i></p>
+                <p class="event received"></p>
+           </div>
        
     
-<ul class="test" data-role="listview" data-inset="true">
-    <li data-role="list-divider" data-theme="a">Divider</li>
-    <li class="menu1"><a href="index.html">Inbox</a></li>
-    <li class="menu2"><a href="index.html">Outbox</a></li>
-    <li><a href="index.html">Sent</a></li>
+<ul class="events" data-role="listview" data-inset="true">
+    <li data-role="list-divider" data-theme="a"><h2>Choose a feed</li>
+    <li class="guildEvents"><a href="index.html">Guild Events</a></li>
+    <li class="menu2"><a href="index.html">Guild Twitter</a></li>
+    <li><a href="index.html">something else...</a></li>
 </ul>
     
 <!--
@@ -70,13 +77,6 @@
             </div>
 -->
 
-            <div id="deviceready" class="blink">
-                <p class="event listening">Connecting to Device</p>
-                <p class="event received">Device is Ready</p>
-
-                
-       
-             </div>
            
 
       
@@ -94,22 +94,56 @@
         </script>
         <script src="js/jquery.mobile-1.4.5.js"></script>
         <script>
-           
 
-            app.initialize();
-            
+         app.initialize();   
 
-        $( "body" ).on("tap", ".menu1", function( event ) 
+        $( "body" ).on("tap", ".guildEvents", function( event ) 
         { 
-
-            alert("this is a test using tap") ;
+ 
+            $.mobile.loading( 'show', {
+            text: 'loading data',
+            textVisible: true,
+            theme: 'a',
+            html: ""
+            });
+           
+            loadEvents();
+            
          });  
 
         $( "body" ).on("click", ".menu2", function( event ) 
         { 
 
             alert("this is a test using click") ;
-         });   
+         }); 
+
+
+         function loadEvents() {
+           $(".events").empty();
+    $.ajax("https://www.exeterguild.org/svc/feeds/events/0?subtree=true").done(function(data) {
+        var i, events;
+        $.each(data, function (i, events) {
+            $(".events").append("<li>"
+            + "<h4>" + events.Title + "</h4>"
+            + "<p>" + events.StartDate + "</p>"
+            + "<p>" + events.EndDate + "</p>"
+            + "<p><a href='"+events.Url+"'>"+events.Url+"</a><p></li>");
+        });
+        $('.events').listview('refresh');
+        $.mobile.loading('hide') ;
+        $('.menu').append("<button id ='back' class='fa fa-chevron-left'></button></div>");
+
+        
+    });
+}  
+
+
+
+$( "body" ).on("tap", "#back", function( event ) 
+        { 
+            location.reload();
+            
+         });  
 
 
         </script>
