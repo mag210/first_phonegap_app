@@ -43,7 +43,7 @@
     <body style="background-color:#e6e6e6">
 
     <div id="reposHome" data-role="page">
-    <div class="menu" style="background-color:#3399CC;" data-role="header" data-position="fixed"><h1 style="color:white;">Menu</h1></div>
+    <div class="menu" style="background-color:#228B22;" data-role="header" data-position="fixed"><h1 style="color:white;">Tennis Quiz 2015</h1></div>
     <div data-role="content">
 
 
@@ -52,32 +52,61 @@
                 <p class="event received"></p>
            </div>
        
-    
+ <!--   
 <ul class="events" data-role="listview" data-inset="true">
     <li data-role="list-divider" data-theme="a"><h2>Choose a feed</li>
     <li class="guildEvents"><a href="index.html">Guild Events</a></li>
     <li class="menu2"><a href="index.html">Guild Twitter</a></li>
     <li><a href="index.html">something else...</a></li>
 </ul>
+-->    
+        
+
+        <form class="nameForm">
+        <label for="text-basic">Please enter your name</label>
+        <input name="text-basic" id="text-basic" value="" type="text">
+         </form>
+       <button id="submit" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-b ui-mini">Submit</button>
+       
+
+
     
-<!--
-      
-        <div class="app">
-            <div class="panel panel-default">
-                <div class="panel-body"><span><p style="text-align: center;">Menu</p></span><span style="float:right"><button type="button" class="btn btn-default" aria-label="Justify"><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></span></button>
-            </div>
-        </div>
+        <div id="instructions" class="ui-corner-all custom-corners" style="display:none">
+          <div id="welcome" class="ui-bar ui-bar-a">
+            <h3>Heading</h3>
+          </div>
+          <div class="ui-body ui-body-a">
+            <p>Test your Tennis skills, start the quiz below!</p>
+          </div>
+          <button id="startQuiz" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-b ui-mini">Start Quiz</button>
+        </div>   
 
-            <div class="list-group" style="padding:10px;">
-                <a href="#" class="list-group-item active">Main menu</a>
-                <a href="#" class="list-group-item" id="menuOption1">Option 1</a>
-                <a href="#" class="list-group-item" id="menuOption2">Option 2</a>
-                <a href="#" class="list-group-item">Option 3</a>
-                <a href="#" class="list-group-item">Option 4</a>
-            </div>
--->
 
-           
+<div id ="questions" style="display:none";>    
+
+
+
+    
+<form>
+        <fieldset data-role="controlgroup">
+        <legend>Who has won the most Grand Slams?</legend>
+        <input name="question1" class="question1" id="radio-choice-v-2a" value="Federer" type="radio">
+        <label for="radio-choice-v-2a">Federer</label>
+        <input name="question1" class="question1" id="radio-choice-v-2b" value="Nadal" type="radio">
+        <label for="radio-choice-v-2b">Nadal</label>
+        <input name="question1" class="question1" id="radio-choice-v-2c" value="Murray" type="radio">
+        <label for="radio-choice-v-2c">Murray</label>
+    </fieldset>
+</form>
+
+
+    <button id="endQuiz" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-b ui-mini">End Quiz</button>
+</div>
+
+
+
+ 
+
 
       
         <script type="text/javascript" src="cordova.js"></script>
@@ -91,6 +120,9 @@
         $.mobile.hashListeningEnabled = false;
         $.mobile.pushStateEnabled = false;
         });
+
+
+        
         </script>
         <script src="js/jquery.mobile-1.4.5.js"></script>
         <script>
@@ -111,32 +143,62 @@
             
          });  
 
-        $( "body" ).on("click", ".menu2", function( event ) 
+        $( "body" ).on("click", "#submit", function( event ) 
         { 
+            $(".nameForm").hide();
+            $("#submit").hide();
+            $("#instructions").show();
+            $("#welcome").empty().append("Welcome " +  $("#text-basic").val()) ;
 
-            alert("this is a test using click") ;
+           //alert ( $("#text-basic").val()) ;
+            
+         }); 
+
+        $( "body" ).on("click", "#startQuiz", function( event ) 
+        { 
+            $("#instructions").hide();
+            $("#startQuiz").hide();
+            $("#questions").show();
+
+           //alert ( $("#text-basic").val()) ;
+            
          }); 
 
 
-         function loadEvents() {
-           $(".events").empty();
-    $.ajax("https://www.exeterguild.org/svc/feeds/events/0?subtree=true").done(function(data) {
-        var i, events;
-        $.each(data, function (i, events) {
-            $(".events").append("<li>"
-            + "<h4>" + events.Title + "</h4>"
-            + "<p>" + events.StartDate + "</p>"
-            + "<p>" + events.EndDate + "</p>"
-            + "<p><a href='"+events.Url+"'>"+events.Url+"</a><p></li>");
-        });
-        $('.events').listview('refresh');
-        $.mobile.loading('hide') ;
-        $('.menu').append("<button id ='back' class='fa fa-chevron-left'></button></div>");
+        $( "body" ).on("click", "#endQuiz", function( event ) 
+        { 
 
-        
-    });
-}  
+             if ($('#radio-choice-v-2a').attr("checked") == "checked") {
+                alert ("checked") ;
 
+            }
+          
+            $("#startQuiz").hide();
+            $("#questions").hide();
+
+            
+            var total = 0 ; 
+
+           
+          
+           var answer1 = $('.question1:checked').val();
+            if ( answer1 == "Federer")
+           {
+            total ++ ;          
+           }
+           
+
+
+            $("#welcome").empty().append("You scored " + total) ;
+            $("#instructions").show();
+         }); 
+
+
+
+                
+
+
+         
 
 
 $( "body" ).on("tap", "#back", function( event ) 
