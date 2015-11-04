@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <!--
+    test
     Copyright (c) 2012-2014 Adobe Systems Incorporated. All rights reserved.
 
     Licensed to the Apache Software Foundation (ASF) under one
@@ -29,7 +30,12 @@
         <meta name="viewport" content="width=device-width, user-scalable=no"/>
       <!-- <link rel="stylesheet" type="text/css" href="css/index.css"> -->
        
-        <link rel="stylesheet" href="css/jquery.mobile-1.4.5.css">
+        
+
+        <link rel="stylesheet" href="css/production-theme2.min.css" />
+   
+        <link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
+        <link rel="stylesheet" href="css/jquery.mobile.structure-1.4.5.min.css" /> 
         <link rel="stylesheet" href="font_awesome/css/font-awesome.min.css">
 
 
@@ -43,7 +49,7 @@
     <body style="background-color:#e6e6e6">
 
     <div id="reposHome" data-role="page">
-    <div class="menu" style="background-color:#3399CC;" data-role="header" data-position="fixed"><h1 style="color:white;">Menu</h1></div>
+    <div class="menu" style="background-color:#3399CC;" data-role="header" data-position="fixed"><h1 style="color:white;">iExeter</h1></div>
     <div data-role="content">
 
 
@@ -52,30 +58,26 @@
                 <p class="event received"></p>
            </div>
        
-    
-<ul class="events" data-role="listview" data-inset="true">
+
+    <form class="loginForm" id="loginForm">
+        <label for="text-basic">Username</label>
+        <input name="username" id="username" value="" type="text">
+        <label for="password">Password:</label>
+        <input name="password" id="password" value="" autocomplete="off" type="password">
+         <br />
+       <button id="login" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-b ui-mini">Login</button>
+     </form>  
+
+   
+<ul class="events" id="mainMenu" data-role="listview" data-inset="true" style="display:none;">
     <li data-role="list-divider" data-theme="a"><h2>Choose a feed</li>
     <li class="guildEvents"><a href="index.html">Guild Events</a></li>
     <li class="menu2"><a href="index.html">Guild Twitter</a></li>
     <li><a href="index.html">something else...</a></li>
 </ul>
-    
-<!--
-      
-        <div class="app">
-            <div class="panel panel-default">
-                <div class="panel-body"><span><p style="text-align: center;">Menu</p></span><span style="float:right"><button type="button" class="btn btn-default" aria-label="Justify"><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></span></button>
-            </div>
-        </div>
 
-            <div class="list-group" style="padding:10px;">
-                <a href="#" class="list-group-item active">Main menu</a>
-                <a href="#" class="list-group-item" id="menuOption1">Option 1</a>
-                <a href="#" class="list-group-item" id="menuOption2">Option 2</a>
-                <a href="#" class="list-group-item">Option 3</a>
-                <a href="#" class="list-group-item">Option 4</a>
-            </div>
--->
+
+
 
            
 
@@ -97,25 +99,24 @@
 
          app.initialize();   
 
-        $( "body" ).on("tap", ".guildEvents", function( event ) 
-        { 
- 
-            $.mobile.loading( 'show', {
-            text: 'loading data',
-            textVisible: true,
-            theme: 'a',
-            html: ""
-            });
-           
-            loadEvents();
+        function authorise(data)
+        {
+
+            if (data =="Bind Successful")
+            {
+                $('#loginForm').hide() ;
+                $('#mainMenu').show() ;   
+               
+            }
+            else
+            {
+                alert("Unable to login, please check username and password") ;
+                return ;
+            }    
             
-         });  
 
-        $( "body" ).on("click", ".menu2", function( event ) 
-        { 
+        }
 
-            alert("this is a test using click") ;
-         }); 
 
 
          function loadEvents() {
@@ -139,11 +140,59 @@
 
 
 
+
+    function authenticate(user, pass) {
+    $.ajax({
+        type: "POST",
+        url: "https://as.exeter.ac.uk/codebox/iexeter/ldap_bind.php",
+        data: { username: user, password: pass },
+        dataType: "json",
+        success: function (data) {
+            
+            authorise(data) ;
+           
+        },
+    });
+}        
+
+
+
 $( "body" ).on("tap", "#back", function( event ) 
         { 
             location.reload();
             
-         });  
+         });
+
+$( "body" ).on("tap", "#login", function( event ) 
+        { 
+
+            if ($("#username").val() == "" || ($("#password").val() == ""))
+            {
+                alert ("Please enter your username and password") ;
+                return ;
+            }
+
+            var $user = $("#username").val() ;
+            var $pass = $("#password").val() ;     
+
+            authenticate($user, $pass) ;
+            
+         });
+
+
+$( "body" ).on("tap", ".guildEvents", function( event ) 
+        { 
+ 
+            $.mobile.loading( 'show', {
+            text: 'loading data',
+            textVisible: true,
+            theme: 'a',
+            html: ""
+            });
+           
+            loadEvents();
+            
+         });                        
 
 
         </script>
